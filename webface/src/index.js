@@ -1,8 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
-import './index.css';
+const React = require("react");
+const ReactDOM = require("react-dom");
+const CodeForm = require("./CodeForm.js")
+const { register } = require("./registerServiceWorker");
+require("./index.css");
 
-ReactDOM.render(<App />, document.getElementById('root'));
-registerServiceWorker();
+ReactDOM.render(<CodeForm />, document.getElementById('root'));
+register();
