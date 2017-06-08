@@ -1,0 +1,16 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "code reformat tool",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm t"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "antlr4": "^4.7.0",
+    "mongodb": "^2.2.28",
+    "when": "^3.7.8"
+  }
+}
