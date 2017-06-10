@@ -5,14 +5,13 @@ const when = require('when');
   * for now this module is a mock for the code generator
   **/
 
-class CodeGenerator {
-  getCode (inCode) {
+module.exports = {
+  getCode: (language, inCode) => {
     return when.promise((resolve, reject) => {
+      console.log("Started reformatting " + language + " code.");
       setTimeout(() => {
-        resolve(inCode.toString() + " is processed by a server.");
+        resolve(inCode.toString() + " has been processed by a server.");
       }, 2500);
     });
   }
-}
-
-module.exports = CodeGenerator;
+};

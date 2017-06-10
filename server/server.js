@@ -19,14 +19,14 @@ class Server {
       mongo.connect(this.dbUrl, (err, db) => {
         if (err !== null) reject(err);
         console.log("Connected to Mongo server: " + this.dbUrl);
-        resolve(true);
+        resolve(db);
       });
     });
   }
   run () {
-    routes(app, {});
     this.connectToDB()
-      .then(_ => {
+      .then(db => {
+        routes(app, db);
         app.listen(this.port, () => console.log("Server is running on " + this.port));
       });
     }
