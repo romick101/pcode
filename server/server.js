@@ -12,7 +12,13 @@ class Server {
     this.host = '127.0.0.1';
     this.port = 7777;
     this.dbUrl = 'mongodb://localhost:27017/pcodedb'
-    app.use(bodyParser.urlencoded({ extended: true}));
+  }
+  configure () {
+    return when.promise(resolve => {
+      app.use(bodyParser.urlencoded({ extended: true}));
+      app.use(bodyParser.json());
+      resolve(true);
+    });
   }
   connectToDB(){
     return when.promise((resolve, reject) => {
@@ -24,11 +30,12 @@ class Server {
     });
   }
   run () {
-    this.connectToDB()
-      .then(db => {
-        routes(app, db);
-        app.listen(this.port, () => console.log("Server is running on " + this.port));
-      });
+    this.configure()
+      .then(_ => this.connectToDB()
+        .then(db => {
+          routes(app, db);
+          app.listen(this.port, () => console.log("Server is running on " + this.port));
+        }));
     }
 }
 

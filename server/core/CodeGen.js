@@ -1,4 +1,5 @@
 const when = require('when');
+const languages = ["lisp", "bash", "java"];
 
 /**
   * @classdesc
@@ -8,9 +9,13 @@ const when = require('when');
 module.exports = {
   getCode: (language, inCode) => {
     return when.promise((resolve, reject) => {
-      console.log("Started reformatting " + language + " code.");
+      if (!languages.includes(language.toLowerCase())) reject("Unsupported lang!");
+      console.log("Trying to reformat " + language + " code.");
       setTimeout(() => {
-        resolve(inCode.toString() + " has been processed by a server.");
+        if (inCode.includes("=>")) reject("Parse error.");
+        resolve({
+          lang: language,
+          code: inCode.toString() + " has been processed by a server."});
       }, 2500);
     });
   }
