@@ -12,7 +12,7 @@ module.exports = (app, db) => {
   * POST, GET, PUT, DELETE (todo)
   */
   //upload code
-  app.post('/', (req, res) => {
+  app.post('/source', (req, res) => {
     if (process.env['DEBUG'] !== null ) {
       console.log(chalk.blue('POST:') + req.url);
       console.log(chalk.blue('Body: ') + JSON.stringify(req.body));
@@ -23,7 +23,7 @@ module.exports = (app, db) => {
       .catch(err => res.send({error: "Error in collection.insert"}));
   });
   //show uploaded code
-  app.get('/:id', (req, res) => {
+  app.get('/source/:id', (req, res) => {
     if (process.env['DEBUG'] !== null ) {
       console.log(chalk.blue('GET:') + req.url);
     }
@@ -36,7 +36,7 @@ module.exports = (app, db) => {
       .catch(err => res.send({error: "Error in collection.findOne"}));
   });
   //edit uploaded code
-  app.put('/:id', (req, res) => {
+  app.put('/source/:id', (req, res) => {
     if (process.env['DEBUG'] !== null ) {
       console.log(chalk.blue('PUT:') + req.url);
     }
@@ -54,18 +54,26 @@ module.exports = (app, db) => {
           }})
       .catch(err => res.send({error: "Error in collection.findOne"}));
   });
-  // app.delete('/:id');
+  app.delete('/source/:id', (req, res) => {
+    if (process.env['DEBUG'] !== null ) {
+      console.log(chalk.blue('DELETE:') + req.url);
+    }
+    const query = {'_id': new ObjectID(req.params.id)};
+    db.collection('source').remove(query)
+      .then(result => res.send(result))
+      .catch(err => res.send({ error: "Error in collection.remove"}));
+  });
 
   /**
   * actions with formatted code:
   * POST, GET, PUT, DELETE (todo)
   */
   //reformat uploaded code
-  app.post('/formatted', (req, res) => {
+  app.post('/source/formatted/:id', (req, res) => {
     if (process.env['DEBUG'] !== null ) {
       console.log(chalk.blue('POST:') + req.url);
     }
-    const query = {'_id': new ObjectID(req.body.id)};
+    const query = {'_id': new ObjectID(req.params.id)};
     db.collection('source').findOne(query)
       .then(item => {
         if (item === null) res.send({error: "No code retrieved by id"});
@@ -82,7 +90,7 @@ module.exports = (app, db) => {
       .catch(err => res.send({error: "Error in collection.findOne"}));
   });
   //show reformatted code
-  app.get('/formatted/:id', (req, res) => {
+  app.get('/source/formatted/:id', (req, res) => {
     if (process.env['DEBUG'] !== null ) {
       console.log(chalk.blue('GET:') + req.url);
     }
@@ -92,10 +100,10 @@ module.exports = (app, db) => {
         res.send({error: "No code found by id"})
         :
         res.send(item))
-      .catch(err => res.send({error: err}));
+      .catch(err => res.send({error: "Error in collection.findOne"}));
   });
   //edit formatted code
-  app.put('/formatted/:id', (req, res) => {
+  app.put('/source/formatted/:id', (req, res) => {
     if (process.env['DEBUG'] !== null ) {
       console.log(chalk.blue('PUT:') + req.url);
     }
@@ -112,5 +120,14 @@ module.exports = (app, db) => {
             .catch(err => res.send({error: "Error in collection.update"}));
           }})
       .catch(err => res.send({error: "Error in collection.findOne"}));
+  });
+  app.delete('/source/:id', (req, res) => {
+    if (process.env['DEBUG'] !== null ) {
+      console.log(chalk.blue('DELETE:') + req.url);
+    }
+    const query = {'_id': new ObjectID(req.params.id)};
+    db.collection('formatted').remove(query)
+      .then(result => res.send(result))
+      .catch(err => res.send({ error: "Error in collection.remove"}));
   });
 }
