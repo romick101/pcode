@@ -26,20 +26,22 @@ JSONListener.prototype.exitJson = function(ctx) {
 // Enter a parse tree produced by JSONParser#obj.
 JSONListener.prototype.enterObj = function(ctx) {
   console.log(chalk.green("enterObj: ") + ctx.toString());
-  this.out += "{";
+  this.out += "{\n";
 };
 
 // Exit a parse tree produced by JSONParser#obj.
 JSONListener.prototype.exitObj = function(ctx) {
   console.log(chalk.red("exitObj: ") + ctx.toString());
-  this.out += "}";
+  this.out += "}\n";
 };
 
 
 // Enter a parse tree produced by JSONParser#pair.
 JSONListener.prototype.enterPair = function(ctx) {
-  console.log(chalk.green("enterPair: ") + ctx.toString());
+  console.log(chalk.green("enterPair: ") + ctx.STRING().getText());
+  this.out += "  ";
   this.out += ctx.STRING().getText();
+  this.out += ": ";
 };
 
 // Exit a parse tree produced by JSONParser#pair.
@@ -69,7 +71,11 @@ JSONListener.prototype.enterValue = function(ctx) {
 // Exit a parse tree produced by JSONParser#value.
 JSONListener.prototype.exitValue = function(ctx) {
   console.log(chalk.red("exitValue: ") + ctx.toString());
-  this.out += getValueText(ctx);
+  // bad bad crutch
+  if (!getValueText(ctx).includes("{") || getValueText(ctx).includes("[")) {
+    this.out += getValueText(ctx);
+    this.out += "\n";
+  }
 };
 
 function getValueText(ctx){
