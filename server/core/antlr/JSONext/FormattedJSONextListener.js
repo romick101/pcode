@@ -103,6 +103,7 @@ FormattedJSONextListener.prototype.exitCdrvalue = function(ctx) {
 
 // Enter a parse tree produced by JSONextParser#nonterminalcdrvalue.
 FormattedJSONextListener.prototype.enterNonterminalcdrvalue = function(ctx) {
+  this.out += ",";
 };
 
 // Exit a parse tree produced by JSONextParser#nonterminalcdrvalue.
