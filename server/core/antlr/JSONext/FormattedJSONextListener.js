@@ -28,7 +28,7 @@ FormattedJSONextListener.prototype.enterObj = function(ctx) {
 
 // Exit a parse tree produced by JSONParser#obj.
 FormattedJSONextListener.prototype.exitObj = function(ctx) {
-  this.out += "\n}\n";
+  this.out += "\n}";
 };
 
 
@@ -83,6 +83,14 @@ FormattedJSONextListener.prototype.exitValue = function(ctx) {
   this.out += getValueText(ctx);
 };
 
+// Enter a parse tree produced by JSONextParser#nonterminalvalue.
+FormattedJSONextListener.prototype.enterNonterminalvalue = function(ctx) {
+};
+
+// Exit a parse tree produced by JSONextParser#nonterminalvalue.
+FormattedJSONextListener.prototype.exitNonterminalvalue = function(ctx) {
+};
+
 // Enter a parse tree produced by JSONextParser#cdrvalue.
 FormattedJSONextListener.prototype.enterCdrvalue = function(ctx) {
 };
@@ -93,13 +101,17 @@ FormattedJSONextListener.prototype.exitCdrvalue = function(ctx) {
   this.out += getValueText(ctx);
 };
 
+// Enter a parse tree produced by JSONextParser#nonterminalcdrvalue.
+FormattedJSONextListener.prototype.enterNonterminalcdrvalue = function(ctx) {
+};
+
+// Exit a parse tree produced by JSONextParser#nonterminalcdrvalue.
+FormattedJSONextListener.prototype.exitNonterminalcdrvalue = function(ctx) {
+};
 
 function getValueText(ctx){
-  debugger;
   if (ctx.STRING() !== null) return ctx.STRING().getText();
   if (ctx.NUMBER() !== null) return ctx.NUMBER().getText();
-  //if (ctx.obj() !== null) return ctx.obj().getText();
-  //if (ctx.array() !== null) return ctx.array().getText();
   if (ctx.getText !== null) return ctx.getText();
   return "";
 }

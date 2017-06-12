@@ -10,42 +10,51 @@ obj
    ;
 
 pair
-   : STRING ':' value
+   : STRING ':' nonterminalvalue
+   | STRING ':' value
    ;
 
 cdrpair
-   : ',' STRING ':' value
+   : ',' STRING ':' nonterminalvalue
+   | ',' STRING ':' value
    ;
 
 array
-   : '[' value cdrvalue* ']'
+   : '[' nonterminalvalue nonterminalcdrvalue* ']'
+   | '[' value cdrvalue* ']'
    | '[' ']'
    ;
 
 topvalue
-   : value
+   : nonterminalvalue
+   | value
    ;
 
 value
    : STRING
    | NUMBER
-   | obj
-   | array
    | 'true'
    | 'false'
    | 'null'
    ;
 
+nonterminalvalue
+   : obj
+   | array
+   ;
+
 cdrvalue
    : ',' STRING
    | ',' NUMBER
-   | ',' obj
-   | ',' array
    | ',' 'true'
    | ',' 'false'
    | ',' 'null'
    ;
 
+nonterminalcdrvalue
+   : ',' obj
+   | ',' array
+   ;
 
 STRING
    : '"' (ESC | ~ ["\\])* '"'
