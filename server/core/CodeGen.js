@@ -1,21 +1,24 @@
 const when = require('when');
 const chalk = require('chalk');
 const antlr4 = require('antlr4/index');
-const JSONLexer = require('./antlr/JSONLexer');
-const JSONParser = require('./antlr/JSONParser');
-const JSONListener = require('./antlr/FormattedJSONListener').FormattedJSONListener;
+// const JSONLexer = require('./antlr/JSON/JSONLexer');
+// const JSONParser = require('./antlr/JSON/JSONParser');
+// const JSONListener = require('./antlr/JSON/FormattedJSONListener').FormattedJSONListener;
+const JSONextLexer = require('./antlr/JSONext/JSONextLexer');
+const JSONextParser = require('./antlr/JSONext/JSONextParser');
+const JSONextListener = require('./antlr/JSONext/FormattedJSONextListener').FormattedJSONextListener;
 const languages = ["json"];
 
 
 function reparse (inCode) {
   return when.promise((resolve, reject) => {
     const chars = new antlr4.InputStream(inCode);
-    const lexer = new JSONLexer.JSONLexer(chars);
+    const lexer = new JSONextLexer.JSONextLexer(chars);
     const tokens = new antlr4.CommonTokenStream(lexer);
-    const parser = new JSONParser.JSONParser(tokens);
+    const parser = new JSONextParser.JSONextParser(tokens);
     parser.buildParseTrees = true;
     const tree = parser.json();
-    const listener = new FormattedJSONListener("");
+    const listener = new FormattedJSONextListener("");
     antlr4.tree.ParseTreeWalker.DEFAULT.walk(listener, tree);
     console.log(chalk.blue("Got code:\n") + listener.out);
     resolve(listener.out);
