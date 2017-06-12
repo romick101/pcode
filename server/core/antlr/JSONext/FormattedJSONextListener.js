@@ -6,6 +6,8 @@ const JSONextListener = require ('./JSONextListener').JSONextListener;
 
 FormattedJSONextListener = function (out) {
   this.out = out;
+  this.spaces = 0;
+
   JSONextListener.call(this);
   return this;
 }
@@ -18,23 +20,28 @@ FormattedJSONextListener.prototype.enterJson = function(ctx) {
 
 // Exit a parse tree produced by JSONParser#json.
 FormattedJSONextListener.prototype.exitJson = function(ctx) {
+  this.spaces -= 2;
 };
 
 
 // Enter a parse tree produced by JSONParser#obj.
 FormattedJSONextListener.prototype.enterObj = function(ctx) {
   this.out += "{\n";
+  this.spaces += 2;
 };
 
 // Exit a parse tree produced by JSONParser#obj.
 FormattedJSONextListener.prototype.exitObj = function(ctx) {
-  this.out += "\n}";
+  this.out += "\n";
+  this.putSpaces();
+  this.out += "}";
+  this.spaces -=2;
 };
 
 
 // Enter a parse tree produced by JSONParser#pair.
 FormattedJSONextListener.prototype.enterPair = function(ctx) {
-  this.out += "  ";
+  this.putSpaces();
   this.out += ctx.STRING().getText();
   this.out += ": ";
 };
@@ -47,7 +54,7 @@ FormattedJSONextListener.prototype.exitPair = function(ctx) {
 FormattedJSONextListener.prototype.enterCdrpair = function(ctx) {
   this.out += ",";
   this.out += "\n";
-  this.out += "  ";
+  this.putSpaces();
   this.out += ctx.STRING().getText();
   this.out += ": ";
 };
@@ -103,12 +110,18 @@ FormattedJSONextListener.prototype.exitCdrvalue = function(ctx) {
 
 // Enter a parse tree produced by JSONextParser#nonterminalcdrvalue.
 FormattedJSONextListener.prototype.enterNonterminalcdrvalue = function(ctx) {
-  this.out += ",";
+  this.out += ", ";
 };
 
 // Exit a parse tree produced by JSONextParser#nonterminalcdrvalue.
 FormattedJSONextListener.prototype.exitNonterminalcdrvalue = function(ctx) {
 };
+
+FormattedJSONextListener.prototype.putSpaces = function () {
+  for (var i = 0; i < this.spaces ; i++) {
+    this.out += " ";
+  }
+}
 
 function getValueText(ctx){
   if (ctx.STRING() !== null) return ctx.STRING().getText();
@@ -116,5 +129,6 @@ function getValueText(ctx){
   if (ctx.getText !== null) return ctx.getText();
   return "";
 }
+
 
 exports.FormattedJSONextListener = FormattedJSONextListener;
