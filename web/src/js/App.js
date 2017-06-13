@@ -1,4 +1,5 @@
 import React from 'react'
+import List from "./components/list";
 
 
 export default class App extends React.Component{
@@ -9,8 +10,8 @@ export default class App extends React.Component{
 
 
 	render(){
-		return <div class="main-container">
-			Hello world
+		return <div className="app-container">
+			<List/>
 		</div>
 	}
 
