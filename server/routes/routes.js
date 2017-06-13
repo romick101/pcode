@@ -140,7 +140,7 @@ module.exports = (app, db) => {
           }})
       .catch(err => res.send({error: "Error in collection.findOne"}));
   });
-  app.delete('/source/:id', (req, res) => {
+  app.delete('/source/formatted/:id', (req, res) => {
     if (process.env['DEBUG'] !== null ) {
       console.log(chalk.blue('DELETE:') + req.url);
     }
