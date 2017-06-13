@@ -17,7 +17,10 @@ module.exports = (app, db) => {
       console.log(chalk.blue('POST:') + req.url);
       console.log(chalk.blue('Body: ') + JSON.stringify(req.body));
     }
-    const inCode = {lang: req.body.lang, code: req.body.code};
+    const inCode = {
+      name: req.body.name,
+      lang: req.body.lang,
+      code: req.body.code};
     db.collection('source').insert(inCode)
       .then(result => res.send(result.ops[0]))
       .catch(err => res.send({error: "Error in collection.insert"}));
@@ -46,6 +49,7 @@ module.exports = (app, db) => {
         if (item === null) res.send({error: "No code retrieved by id"});
         else {
           const editedCode = {
+            name: req.body.name,
             lang: item.lang,
             code: req.body.code};
           db.collection('source').update(query, editedCode)
@@ -79,9 +83,12 @@ module.exports = (app, db) => {
         if (item === null) res.send({error: "No code retrieved by id"});
         else {
           getFormattedCode(item.lang, item.code)
-          .then(resCode => {
-            db.collection('formatted').insert(resCode)
-              .then(result => res.send(result.ops[0]))
+          .then(({ lang, code }) => {
+            db.collection('formatted').insert({
+              name: item.name,
+              lang,
+              code
+            }).then(result => res.send(result.ops[0]))
               .catch(err => res.send({error: "Error in collection.insert"}));
           })
           .catch(err => res.send({error: err}));
@@ -113,6 +120,7 @@ module.exports = (app, db) => {
         if (item === null) res.send({error: "No code retrieved by id"});
         else {
           const editedCode = {
+            name: req.body.name,
             lang: item.lang,
             code: req.body.code};
           db.collection('formatted').update(query, editedCode)
