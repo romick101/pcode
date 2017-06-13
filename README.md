@@ -15,15 +15,15 @@ Running MongoDB server is required!
 Start server:
 
 run from server/ directory:
-### npm install
-### node server.js
+### `npm install`
+### `node server.js`
 
 Start web interface:
 
 run from webface/ directory:
 
-### npm install
-### npm start
+### `npm install`
+### `npm start`
 
 ## Supported formats:
 
