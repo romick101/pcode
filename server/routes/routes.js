@@ -38,6 +38,17 @@ module.exports = (app, db) => {
         res.send(item))
       .catch(err => res.send({error: "Error in collection.findOne"}));
   });
+  app.get('/source', (req, res) => {
+    if (process.env['DEBUG'] !== null ) {
+      console.log(chalk.blue('GET:') + req.url);
+    }
+    db.collection('source').find({}).toArray()
+      .then(items => items === null ?
+        res.send({error: "No items found"})
+        :
+        res.send(items))
+      .catch(err => res.send({error: "Error in collection.find"}));
+  });
   //edit uploaded code
   app.put('/source/:id', (req, res) => {
     if (process.env['DEBUG'] !== null ) {
