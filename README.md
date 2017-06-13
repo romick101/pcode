@@ -10,8 +10,14 @@ An application for generating formatted code from sources.
 
 ## Usage
 
-Running MongoDB server is required!
+For now web interface is not yet finished, so some third-party
+app (e.g. Postman) can be used to get responses from the server.
 
+Running MongoDB server is required!
+ ```
+ mongod --dbpath=some/path
+ ```
+ 
 Start server:
 
 run from server/ directory:
