@@ -95,12 +95,16 @@ module.exports = (app, db) => {
         else {
           getFormattedCode(item.lang, item.code)
           .then(({ lang, code }) => {
-            db.collection('formatted').insert({
-              name: item.name,
-              lang,
-              code
-            }).then(result => res.send(result.ops[0]))
-              .catch(err => res.send({error: "Error in collection.insert"}));
+            db.collection('formatted').findOne({name: item.name})
+            .then( already => {
+              if (already !== null) res.send(already);
+              else db.collection('formatted').insert({
+                    name: item.name,
+                    lang,
+                    code
+                  }).then(result => res.send(result.ops[0]))
+                    .catch(err => res.send({error: "Error in collection.insert"}));
+              })
           })
           .catch(err => res.send({error: err}));
         }
