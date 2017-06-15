@@ -10,9 +10,6 @@ An application for generating formatted code from sources.
 
 ## Usage
 
-For now web interface is not yet finished, so some third-party
-app (e.g. Postman) can be used to get responses from the server.
-
 Running MongoDB server is required!
  ```
  mongod --dbpath=some/path
@@ -31,7 +28,7 @@ Start web interface:
 run from webface/ directory:
  ```
  npm install
- npm start
+ node server.js
  ```
 
 ## Supported formats:
